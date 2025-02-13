@@ -1,0 +1,733 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    /* Change from simple gradient to a more sophisticated background */
+    background: 
+        linear-gradient(135deg, rgba(49, 39, 100, 0.9) 0%, rgba(27, 24, 113, 0.9) 100%),
+        url('https://images.unsplash.com/photo-1557683316-973673baf926?auto=format&fit=crop&q=80') center/cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.payment-container {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 2rem;
+    border-radius: 20px;
+    box-shadow: 
+        0 20px 60px rgba(0, 0, 0, 0.2),
+        0 1px 3px rgba(0, 0, 0, 0.1),
+        0 0 0 1px rgba(255, 255, 255, 0.1);
+    width: 450px;
+    position: relative;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.card-preview {
+    width: 100%;
+    height: 220px;
+    /* Update card gradient for more realistic look */
+    background: linear-gradient(45deg, 
+        rgba(29, 29, 29, 1) 0%,
+        rgba(45, 45, 45, 1) 100%);
+    border-radius: 16px;
+    padding: 25px;
+    margin-bottom: 30px;
+    position: relative;
+    overflow: hidden;
+    color: white;
+    transition: all 0.3s ease;
+    transform-style: preserve-3d;
+    perspective: 1000px;
+    box-shadow: 
+        0 15px 35px rgba(0, 0, 0, 0.3),
+        0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.card-preview.rupay {
+    background: linear-gradient(25deg, #f53844, #42378f);
+}
+
+.card-preview.visa {
+    background: linear-gradient(25deg, #233329, #63d471);
+}
+
+.card-preview.mastercard {
+    background: linear-gradient(25deg, #f2994a, #f2c94c);
+}
+
+.card-chip {
+    width: 50px;
+    height: 40px;
+    /* More realistic chip gradient */
+    background: linear-gradient(135deg, 
+        #ceb352 0%,
+        #c3a038 50%,
+        #b68e29 100%);
+    border-radius: 8px;
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.card-chip::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 70%;
+    height: 70%;
+    background: linear-gradient(90deg, transparent 50%, rgba(255,255,255,0.1) 51%);
+    background-size: 4px 100%;
+}
+
+.card-chip::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 70%;
+    height: 70%;
+    background: linear-gradient(0deg, transparent 50%, rgba(255,255,255,0.1) 51%);
+    background-size: 100% 4px;
+}
+
+.card-type-label {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 16px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.card-network {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    gap: 10px;
+}
+
+.card-network img {
+    height: 30px;
+    filter: brightness(0) invert(1);
+    opacity: 0.7;
+    transition: opacity 0.3s;
+}
+
+.card-network img.active {
+    opacity: 1;
+}
+
+.card-hologram {
+    position: absolute;
+    width: 60px;
+    height: 40px;
+    right: 20px;
+    bottom: 60px;
+    background: linear-gradient(135deg, 
+        rgba(255,255,255,0.3) 0%,
+        rgba(255,255,255,0.1) 50%,
+        rgba(255,255,255,0.3) 100%
+    );
+    border-radius: 6px;
+    animation: hologram 3s infinite linear;
+}
+
+@keyframes hologram {
+    0% { opacity: 0.5; }
+    50% { opacity: 1; }
+    100% { opacity: 0.5; }
+}
+
+.card-number-display {
+    font-size: 22px;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+}
+
+.card-details {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+}
+
+.card-logo {
+    width: 60px;
+    filter: brightness(0) invert(1);
+    opacity: 0.7;
+    transition: opacity 0.3s;
+}
+
+.card-logo.active {
+    opacity: 1;
+}
+
+.input-group {
+    margin-bottom: 20px;
+    position: relative;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    color: #2d3436;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #e2e8f0;
+    border-radius: 10px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    background: rgba(247, 250, 252, 0.8);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+input:focus {
+    border-color: #4c51bf;
+    box-shadow: 
+        0 0 0 3px rgba(76, 81, 191, 0.1),
+        inset 0 2px 4px rgba(0, 0, 0, 0.05);
+    outline: none;
+}
+
+.row {
+    display: flex;
+    gap: 15px;
+}
+
+.security-footer {
+    margin-top: 2rem;
+    text-align: center;
+    color: #4a5568;
+    font-size: 12px;
+    padding: 15px;
+    background: rgba(247, 250, 252, 0.8);
+    border-radius: 10px;
+    border: 1px solid rgba(226, 232, 240, 0.8);
+}
+
+.ssl-seal {
+    display: inline-block;
+    background: linear-gradient(135deg, #38a169 0%, #2f855a 100%);
+    color: white;
+    padding: 8px 15px;
+    border-radius: 8px;
+    margin-top: 10px;
+    font-weight: 500;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.pay-button {
+    background: linear-gradient(135deg, #4c51bf 0%, #3c366b 100%);
+    color: white;
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+    box-shadow: 
+        0 4px 6px rgba(76, 81, 191, 0.1),
+        0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.pay-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 
+        0 7px 14px rgba(76, 81, 191, 0.2),
+        0 3px 6px rgba(0, 0, 0, 0.1);
+}
+
+.card-type-icon {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #4834d4;
+}
+
+@keyframes shine {
+    0% { background-position: 100% 100%; }
+    100% { background-position: 0% 0%; }
+}
+
+.card-preview.shine {
+    background: linear-gradient(45deg, #1a1a1a, #373737, #1a1a1a);
+    background-size: 200% 200%;
+    animation: shine 3s linear infinite;
+}
+
+/* Modal styles for OTP verification */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: white;
+    padding: 2.5rem;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    position: relative;
+    animation: modalSlideIn 0.3s ease;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+}
+
+@keyframes modalSlideIn {
+    from { transform: translateY(-50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.otp-header {
+    margin-bottom: 20px;
+}
+
+.otp-header h3 {
+    font-size: 24px;
+    color: #1a1a1a;
+    margin-bottom: 10px;
+}
+
+.otp-header p {
+    color: #666;
+    font-size: 14px;
+}
+
+.otp-inputs {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.otp-input {
+    width: 45px;
+    height: 45px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.otp-input:focus {
+    border-color: #4834d4;
+    box-shadow: 0 0 0 3px rgba(72, 52, 212, 0.1);
+    outline: none;
+}
+
+/* Timer style */
+.timer {
+    color: #666;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+.resend-button {
+    color: #4834d4;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-decoration: underline;
+    margin-top: 10px;
+}
+
+.resend-button:disabled {
+    color: #999;
+    cursor: not-allowed;
+}
+
+/* Loading animation */
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255,255,255,0.9);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.loading-spinner {
+    width: 50px;
+    height: 50px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #4834d4;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Success animation styles */
+.success-animation {
+    padding: 3rem 2rem;
+}
+
+.success-message {
+    margin: 20px 0;
+    animation: fadeInUp 0.6s ease;
+}
+
+.success-message h2 {
+    color: #2ecc71;
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+
+.success-details {
+    color: #666;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+/* Receipt styles */
+.receipt {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    position: relative;
+    overflow: hidden;
+    margin: 20px 0;
+}
+
+.receipt-logo {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #4834d4;
+    font-size: 24px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.receipt::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 6px;
+    background: linear-gradient(90deg, #4834d4, #686de0);
+}
+
+.receipt-header {
+    text-align: center;
+    padding-bottom: 20px;
+    border-bottom: 2px dashed #e0e0e0;
+    position: relative;
+}
+
+.receipt-header::after {
+    content: '';
+    position: absolute;
+    left: -20px;
+    bottom: -10px;
+    width: 20px;
+    height: 20px;
+    background: #f8f9fa;
+    border-radius: 50%;
+    box-shadow: 
+        20px 0 0 #f8f9fa,
+        40px 0 0 #f8f9fa,
+        60px 0 0 #f8f9fa,
+        80px 0 0 #f8f9fa,
+        100px 0 0 #f8f9fa,
+        120px 0 0 #f8f9fa,
+        140px 0 0 #f8f9fa,
+        160px 0 0 #f8f9fa,
+        180px 0 0 #f8f9fa,
+        200px 0 0 #f8f9fa,
+        220px 0 0 #f8f9fa,
+        240px 0 0 #f8f9fa,
+        260px 0 0 #f8f9fa,
+        280px 0 0 #f8f9fa,
+        300px 0 0 #f8f9fa,
+        320px 0 0 #f8f9fa,
+        340px 0 0 #f8f9fa;
+}
+
+.receipt-details {
+    margin: 20px 0;
+    padding: 20px 0;
+    border-bottom: 2px dashed #e0e0e0;
+}
+
+.receipt-row {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 0;
+    color: #666;
+}
+
+.status-success {
+    color: #2ecc71;
+    font-weight: 600;
+}
+
+.receipt-barcode {
+    height: 60px;
+    margin: 20px auto;
+    background: repeating-linear-gradient(
+        90deg,
+        #000,
+        #000 2px,
+        transparent 2px,
+        transparent 4px
+    );
+    opacity: 0.7;
+}
+
+.receipt-footer {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.download-button {
+    background: #4834d4;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 20px auto;
+    transition: all 0.3s ease;
+}
+
+.download-button:hover {
+    background: #3c2ab3;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(72, 52, 212, 0.2);
+}
+
+/* Bank verification animation */
+.bank-verify {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 20px 0;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 10px;
+    animation: pulse 2s infinite;
+}
+
+.bank-verify-icon {
+    width: 24px;
+    height: 24px;
+    border: 2px solid #4834d4;
+    border-radius: 50%;
+    border-top-color: transparent;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.02); }
+    100% { transform: scale(1); }
+}
+
+/* Add bank logos */
+.bank-logos {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 20px;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 10px;
+    position: relative;
+    width: 100%;
+}
+
+.bank-logo-img {
+    height: 30px;
+    object-fit: contain;
+    opacity: 0.8;
+    transition: opacity 0.3s;
+}
+
+.bank-logo-img:hover {
+    opacity: 1;
+}
+
+.secured-by {
+    position: absolute;
+    top: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #4834d4;
+    color: white;
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 10px;
+}
+
+.security-badges {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 15px;
+    width: 100%;
+}
+
+.badge {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background: #f8f9fa;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 12px;
+    color: #666;
+}
+
+/* Enhanced card animations */
+.card-preview {
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 
+        0 15px 35px rgba(0,0,0,0.2),
+        0 5px 15px rgba(0,0,0,0.1);
+}
+
+.card-preview:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 
+        0 20px 40px rgba(0,0,0,0.3),
+        0 15px 25px rgba(0,0,0,0.2);
+}
+
+/* Card type detection animation */
+.card-type-icon {
+    transition: all 0.3s ease;
+}
+
+.card-type-icon.valid {
+    color: #2ecc71;
+    transform: scale(1.2);
+}
+
+.card-type-icon.invalid {
+    color: #e74c3c;
+    animation: shake 0.5s ease-in-out;
+}
+
+/* Enhanced loading animation */
+.loading-spinner {
+    border-width: 3px;
+    border-top-width: 3px;
+    border-top-color: #4834d4;
+    filter: drop-shadow(0 0 10px rgba(72, 52, 212, 0.3));
+}
+
+/* Bank verification enhancement */
+.bank-verify {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border: 1px solid #dee2e6;
+}
+
+.bank-verify-icon {
+    border-width: 3px;
+    border-top-width: 3px;
+    filter: drop-shadow(0 0 5px rgba(72, 52, 212, 0.2));
+}
+
+/* Success animation enhancement */
+@keyframes successScale {
+    0% { transform: scale(0.8); opacity: 0; }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.success-animation {
+    animation: successScale 0.5s ease-out;
+}
+
+/* Add shimmer effect to card */
+@keyframes shimmer {
+    0% { background-position: -1000px 0; }
+    100% { background-position: 1000px 0; }
+}
+
+.card-preview.shine::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        rgba(255,255,255,0) 0%,
+        rgba(255,255,255,0.2) 50%,
+        rgba(255,255,255,0) 100%
+    );
+    background-size: 1000px 100%;
+    animation: shimmer 2s infinite linear;
+}
+
+/* Add subtle pattern to background */
+.payment-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        linear-gradient(45deg, transparent 48%, rgba(255, 255, 255, 0.05) 50%, transparent 52%),
+        linear-gradient(-45deg, transparent 48%, rgba(255, 255, 255, 0.05) 50%, transparent 52%);
+    background-size: 20px 20px;
+    pointer-events: none;
+    border-radius: 20px;
+}
+
+.error-message {
+    color: #ff4757;
+    font-size: 12px;
+    margin-top: 5px;
+    transition: all 0.3s ease;
+}

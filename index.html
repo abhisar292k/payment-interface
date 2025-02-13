@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Payment Gateway</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+   
+</head>
+<body>
+    <div class="payment-container">
+        <div class="card-preview shine" id="card-preview">
+            <div class="card-type-label" id="card-type-label">DEBIT</div>
+            <div class="card-chip"></div>
+            <div class="card-hologram"></div>
+            <div class="card-number-display" id="card-display">•••• •••• •••• ••••</div>
+            <div class="card-details">
+                <div>
+                    <div style="opacity:0.7;font-size:12px;margin-bottom:5px">Card Holder</div>
+                    <div id="name-display">YOUR NAME</div>
+                </div>
+                <div>
+                    <div style="opacity:0.7;font-size:12px;margin-bottom:5px">Valid Thru</div>
+                    <div id="expiry-display">MM/YY</div>
+                </div>
+            </div>
+            <div class="card-network">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" class="card-logo" id="visa-logo">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" class="card-logo" id="master-logo">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/9/9d/RuPay.svg" class="card-logo" id="rupay-logo">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/American_Express_logo_%282018%29.svg" class="card-logo" id="amex-logo">
+            </div>
+        </div>
+
+        <form id="payment-form">
+            <div class="input-group">
+                <label>Card Number</label>
+                <input type="text" id="card-number" placeholder="4242 4242 4242 4242" maxlength="19">
+                <i class="fas fa-credit-card card-type-icon"></i>
+            </div>
+
+            <div class="input-group">
+                <label>Card Holder Name</label>
+                <input type="text" id="card-name" placeholder="Name on card">
+            </div>
+
+            <div class="row">
+                <div class="input-group" style="flex:2">
+                    <label>Expiry Date</label>
+                    <input type="text" id="expiry" placeholder="MM/YY" maxlength="5">
+                </div>
+                <div class="input-group" style="flex:1">
+                    <label>CVV</label>
+                    <input type="password" id="cvv" placeholder="•••" maxlength="4">
+                </div>
+            </div>
+
+            <button type="submit" class="pay-button">
+                Pay ₹1,500.00 <i class="fas fa-lock" style="margin-left:8px"></i>
+            </button>
+        </form>
+
+        <!-- Move security badges inside security footer -->
+        <div class="security-footer">
+            <i class="fas fa-lock"></i> Secured by SSL Encryption
+            <div class="ssl-seal">
+                <i class="fas fa-shield-alt"></i> PCI DSS Compliant
+            </div>
+            <div class="security-badges">
+                <div class="badge">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>RBI Compliant</span>
+                </div>
+                <div class="badge">
+                    <i class="fas fa-lock"></i>
+                    <span>256-bit SSL</span>
+                </div>
+            </div>
+            <div style="margin-top:10px;color:#a4b0be">
+                Test Mode: No real payment required
+            </div>
+        </div>
+    </div>
+
+    <!-- OTP Modal -->
+    <div class="modal" id="otp-modal">
+        <div class="modal-content">
+            <div class="bank-logo">
+                <i class="fas fa-university" style="font-size: 2em; color: #4c51bf;"></i>
+            </div>
+            <div class="otp-header">
+                <h3>Secure Verification</h3>
+                <p>Please enter the OTP sent to</p>
+                <p style="font-weight: 600;">+91 ******1234</p>
+            </div>
+            <div class="otp-inputs">
+                <input type="text" class="otp-input" maxlength="1" autofocus>
+                <input type="text" class="otp-input" maxlength="1">
+                <input type="text" class="otp-input" maxlength="1">
+                <input type="text" class="otp-input" maxlength="1">
+                <input type="text" class="otp-input" maxlength="1">
+                <input type="text" class="otp-input" maxlength="1">
+            </div>
+            <div class="timer">
+                Resend OTP in <span id="timer">30</span>s
+            </div>
+            <button class="resend-button" id="resend-otp" disabled>Resend OTP</button>
+            <button class="pay-button" onclick="verifyOTP()">Verify OTP</button>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="modal" id="success-modal">
+        <div class="modal-content">
+            <div class="success-animation">
+                <div style="color: #2ecc71; font-size: 4em; margin-bottom: 20px;">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="success-message">
+                    <h2>Payment Successful!</h2>
+                    <p>Transaction ID: <span id="transaction-id"></span></p>
+                </div>
+                <div class="receipt">
+                    <div class="receipt-logo">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>SecurePay</span>
+                    </div>
+                    <div class="receipt-header">
+                        <h3>Payment Receipt</h3>
+                        <p id="receipt-date"></p>
+                    </div>
+                    <div class="receipt-details">
+                        <div class="receipt-row">
+                            <span>Amount Paid</span>
+                            <span>₹1,500.00</span>
+                        </div>
+                        <div class="receipt-row">
+                            <span>Payment Method</span>
+                            <span id="receipt-card-type"></span>
+                        </div>
+                        <div class="receipt-row">
+                            <span>Card Number</span>
+                            <span id="receipt-card-number"></span>
+                        </div>
+                        <div class="receipt-row">
+                            <span>Transaction ID</span>
+                            <span id="receipt-transaction-id"></span>
+                        </div>
+                        <div class="receipt-row">
+                            <span>Transaction Time</span>
+                            <span id="receipt-time"></span>
+                        </div>
+                        <div class="receipt-row">
+                            <span>Status</span>
+                            <span class="status-success">Success</span>
+                        </div>
+                    </div>
+                    <div class="receipt-footer">
+                        <div class="receipt-barcode"></div>
+                        <button class="download-button" onclick="downloadReceipt()">
+                            <i class="fas fa-download"></i> Download Receipt
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loading-overlay">
+        <div class="loading-spinner"></div>
+    </div>
+
+   <script src="script.js"></script>
+</body>
+</html>
