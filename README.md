@@ -1,7 +1,3 @@
-Here's a README file you can add to your GitHub repository:
-
----
-
 # 💳 Secure Payment Gateway  
 
 A modern, responsive payment interface built using **HTML, CSS, and JavaScript**. This project simulates a secure payment flow, including card details input, OTP verification, and a success receipt.  
